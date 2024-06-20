@@ -1,8 +1,5 @@
 from direct.showbase.ShowBase import ShowBase
-from direct.showbase.MessengerGlobal import messenger
-from direct.gui.DirectLabel import DirectLabel
-from panda3d.core import Shader,TextureStage
-from panda3d.core import CardMaker
+from panda3d.core import TextureStage,CardMaker
 from direct.actor import Actor
 import os
 
@@ -35,6 +32,16 @@ class Wrapper:
         ob.setTwoSided(True)
         ob.clearTexture()
         
+        tex = self.b.loader.loadTexture("ground.jpg")
+        cm = CardMaker('card')
+        card = self.b.render.attachNewNode(cm.generate())
+        pos=(-3 + c *3, 22,0)
+        card.setPos(pos)
+        card.setTexture(tex)
+        
+        if c==0:
+            return
+        
         ts2 = TextureStage('ts2')
         
         if False:
@@ -46,16 +53,11 @@ class Wrapper:
                 ts2.setMode(TextureStage.MAdd)
             if c == 4:
                 ts2.setMode(TextureStage.MBlend)
-            ts2.setTexcoordName("")
+            #ts2.setTexcoordName("")
         
-        tex = self.b.loader.loadTexture("ground.jpg")
         ob.setTexture(ts2,tex)
         
-        cm = CardMaker('card')
-        card = self.b.render.attachNewNode(cm.generate())
-        pos=(-3 + c *3, 22,0)
-        card.setPos(pos)
-        card.setTexture(tex)
+        
 
 def recursive_clear(ob,stage):
     if "children" in dir(ob):
